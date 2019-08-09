@@ -1,0 +1,87 @@
+html {
+	font-size: 16px;
+}
+.top-nav {
+	background-color:#0f8bba;
+}
+.brand-name {
+	padding: .5rem 0 0;
+	margin: 0;
+}
+.user-card {
+	width:100%;
+	max-width: 250px;
+}
+.user-menu {
+	.list-group-item {
+		border-bottom:0;
+	}
+}
+.sidebar {
+	.sidebar-nav > span {
+		padding:1px 0;
+	}
+	.nav-link[aria-expanded] > i {
+		transition-property: transform;
+		transition-duration: .3s;
+	}
+	// This gets changed by Bootstrap automatically so let's use it.
+	.nav-link[aria-expanded="true"] > i {
+		transform: rotate(90deg);
+	}
+	.nav-link {
+		border: 1px solid #dee2e6;
+		margin-top:-1px;
+	}
+	.sub-menu {
+		font-size: .85rem;
+		li {
+			display:block;
+			width:100%;
+		}
+	}
+}
+
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+//@media (min-width: 576px) {}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+	.brand-name {
+		margin: 0 0 0 1rem;
+		padding: 0 0 0 .8rem;
+		border-left: 1px solid #ffffff;
+	}
+	.user-container {
+		position:absolute;
+		top: .8rem;
+		right: .8rem;
+		z-index:1000;
+		button, form {
+			float:left;
+		}
+		button, button:hover {
+			color:white;
+		}
+	}
+	.user-menu {
+		margin-top:1rem;
+	}
+	.sidebar {
+		.sub-menu {
+			a.list-group-item:first-child {
+				border-top:0!important;
+			}
+		}
+	}
+}
+
+// Large devices (desktops, 992px and up)
+//@media (min-width: 992px) {}
+
+// Extra large devices (large desktops, 1200px and up)
+//@media (min-width: 1200px) {}
