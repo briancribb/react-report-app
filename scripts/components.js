@@ -1,4 +1,4 @@
-let CP = CP || {};
+var CP = CP || {};
 CP.components = {};
 CP.components.table = class extends React.Component {
 	constructor(props) {

@@ -4,7 +4,7 @@ function manageResize() {
 }
 $(window).on('resize', _.debounce(manageResize, 200));
 */
-let CP = CP || {};
+var CP = CP || {};
 CP.methods = {
 	nav: {},
 	init: function(appData) {

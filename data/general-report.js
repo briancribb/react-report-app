@@ -1,6 +1,6 @@
 {
   "fields":[
-    {"id":"id","label":"User ID"},
+    {"id":"userId","label":"User ID"},
     {"id":"username","label":"Username"},
     {"id":"first_name","label":"First Name"},
     {"id":"last_name","label":"Last Name"},
@@ -13,7 +13,7 @@
   ],
   "rows":[
     {
-      "id":1,
+      "userId":1,
       "username":"gwinwright0",
       "first_name":"Guenna",
       "last_name":"Winwright",
@@ -25,7 +25,7 @@
       "drug_name":"Rexall Alcohol Prep"
     },
     {
-      "id":2,
+      "userId":2,
       "username":"astartin1",
       "first_name":"Ave",
       "last_name":"Startin",
@@ -37,7 +37,7 @@
       "drug_name":"HEMORRHOIDS RELIEF"
     },
     {
-      "id":3,
+      "userId":3,
       "username":"kpickle2",
       "first_name":"Kathryn",
       "last_name":"Pickle",
@@ -49,7 +49,7 @@
       "drug_name":"ADVANCED HYDRO-LIQUID COMPACT (REFILL)"
     },
     {
-      "id":4,
+      "userId":4,
       "username":"amathivat3",
       "first_name":"Annaliese",
       "last_name":"Mathivat",
@@ -61,7 +61,7 @@
       "drug_name":"Torsemide"
     },
     {
-      "id":5,
+      "userId":5,
       "username":"lweatherup4",
       "first_name":"Lissa",
       "last_name":"Weatherup",
@@ -73,7 +73,7 @@
       "drug_name":"Midazolam Hydrochloride"
     },
     {
-      "id":6,
+      "userId":6,
       "username":"tlegassick5",
       "first_name":"Terrill",
       "last_name":"Le Gassick",
