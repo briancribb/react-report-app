@@ -1,1 +1,1 @@
-CP.methods.init(appData);
+CP.methods.init();

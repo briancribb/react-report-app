@@ -3,12 +3,35 @@ CP.components = {};
 CP.components.table = class extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = props.data;
+		this.state = {
+			initialized:false,
+			report:null
+		};
 	}
 
+	componentDidMount() {
+		let that = this;
+		console.log('table state', this.state);
+		CP.methods.getReport = that.getReport.bind(this);
+		this.getReport();
+	}
+
+	getReport(reportName = 'report-general') {
+		let that = this;
+		that.setState({
+			initialized:false
+		});
+		CP.methods.getData('data/'+reportName+'.json', (data) =>{
+			that.setState({
+				report:data,
+				initialized:true
+			});
+		});
+	}
+  
 	_getColumns() {
 		let that = this;
-		return that.state.fields.slice(1).map((field) =>{
+		return that.state.report.fields.slice(1).map((field) =>{
 			return(
 				<th key={field.id}>
 					{field.label}
@@ -19,10 +42,10 @@ CP.components.table = class extends React.Component {
 
 	_getRows(){
 		let that = this;
-		return that.state.rows.map((row) =>{
+		return that.state.report.rows.map((row) =>{
 			return(
 				<tr key={row.id}>
-					{that.state.fields.slice(1).map((field)=>{
+					{that.state.report.fields.slice(1).map((field)=>{
 						return(<td key={field.id}>{row[field.id]}</td>);
 					})}
 				</tr>
@@ -31,21 +54,30 @@ CP.components.table = class extends React.Component {
 	}
 
 	render() {
-		let that = this;
-		let columns = that._getColumns();
-		let rows = that._getRows();
-		return (
-			<table className="table table-responsive">
-				<thead>
-					<tr>
-						{columns}
-					</tr>
-				</thead>
-				<tbody>
-					{rows}
-				</tbody>
-			</table>
-		);
+		let that = this,
+			markup = null;
+
+		if (this.state.initialized) {
+			let columns = that._getColumns();
+			let rows = that._getRows();
+			markup = 
+				<table className="table table-responsive">
+					<thead>
+						<tr>
+							{columns}
+						</tr>
+					</thead>
+					<tbody>
+						{rows}
+					</tbody>
+				</table>
+		} else {
+			markup = 
+				<div>
+					<i className="fas fa-spinner fa-spin"></i> Loading...
+				</div>
+		}
+		return(markup);
 	}
 }
 
@@ -53,6 +85,11 @@ CP.components.sidebar = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {navItems:this._transformData(props.data)};
+	}
+
+	componentDidMount() {
+		let that = this;
+		console.log('sidebar state', this.state);
 	}
 
 	_transformData(data) {
@@ -83,7 +120,17 @@ CP.components.sidebar = class extends React.Component {
 
 	_getLinks() {
 		let that = this;
-		
+
+
+		function getLink(navItem, extraClasses = '') {
+			let strClasses = extraClasses ? ("nav-link " + extraClasses) : "nav-link";
+
+
+			let markup = <a className={strClasses}>{navItem.label}</a>;
+
+			return markup;
+		}
+
 		return this.state.navItems.map((navItem) =>{
 			let totalMarkup = null,
 					linkMarkup = null,
@@ -99,9 +146,7 @@ CP.components.sidebar = class extends React.Component {
 					{navItem.label}<i class="fas fa-chevron-right float-right mt-1"></i>
 				</a>)
 			:
-				(<a className="nav-link">
-					{navItem.label}
-				</a>)
+				getLink(navItem)
 			;
 	
 			// If there's a child menu for this link.
@@ -109,9 +154,7 @@ CP.components.sidebar = class extends React.Component {
 					let childLinks = navItem.arrChildMenu.map((childLink)=>{
 						return (
 							<li class="nav-item" key={childLink.id}>
-								<a className="nav-link pl-4">
-									{childLink.label}
-								</a>
+								{getLink(childLink, "pl-4")}
 							</li>
 						)						
 					});
@@ -133,6 +176,11 @@ CP.components.sidebar = class extends React.Component {
 
 	render() {
 		let that = this;
+		if (that.state.initialized) {
+			
+		} else {
+			
+		}
 		return (
 			<ul class="sidebar-nav nav flex-column accordian"  id={that.props.containerId}>
 				{that._getLinks(that.props.containerId)}
