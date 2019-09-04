@@ -4,44 +4,30 @@ CP.components.table = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			initialized:false,
 			report:null
 		};
 	}
 
 	componentDidMount() {
 		let that = this;
-		CP.methods.getReport = that.getReport.bind(this);
+		if (that.props.canForceUpdate) CP.instances.push(this);
 		this.getReport();
 	}
 
-	getReport(reportName = 'report-general') {
+	_getColumns(report) {
 		let that = this;
-		that.setState({
-			initialized:false
-		});
-		CP.methods.getSingleData('data/'+reportName+'.json', (data) =>{
-			that.setState({
-				report:data,
-				initialized:true
-			});
-		});
-	}
-  
-	_getColumns() {
-		let that = this;
-		return that.state.report.fields.slice(1).map((field) =>{
+		return report.fields.slice(1).map((field) =>{
 			return(
 				<th key={field.id}>
-					{field.label}
+				{CP.methods.getLanguageElement(field.id)}
 				</th>
 			);
 		});
 	}
 
-	_getRows(){
+	_getRows(report){
 		let that = this;
-		return that.state.report.rows.map((row) =>{
+		return report.rows.map((row) =>{
 			return(
 				<tr key={row.id}>
 					{that.state.report.fields.slice(1).map((field)=>{
@@ -53,12 +39,13 @@ CP.components.table = class extends React.Component {
 	}
 
 	render() {
+		console.log('--- table', this);
 		let that = this,
 			markup = null;
 
 		if (this.state.initialized) {
-			let columns = that._getColumns();
-			let rows = that._getRows();
+			let columns = that._getColumns(that.props.report);
+			let rows = that._getRows(that.props.report);
 			markup = 
 				<table className="table table-responsive">
 					<thead>
@@ -80,6 +67,66 @@ CP.components.table = class extends React.Component {
 	}
 }
 
+CP.components.report = class extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			titleId:null,
+			reportName:'',
+			report:null
+		};
+	}
+
+	componentDidMount() {
+		let that = this;
+		CP.methods.getReport = that.getReport.bind(this);
+		if (that.props.canForceUpdate) CP.instances.push(this);
+		this.getReport();
+	}
+
+	getReport(reportName = 'report-general') {
+		let that = this;
+		that.setState({
+			initialized:false,
+			reportName: reportName
+		});
+
+
+		let objSource = {
+			[this.state.reportName]:{path:'data/'+reportName+'.json', requestData:{}, callback: function(data){
+				//console.log('-- '+reportName, data);
+				that.setState({
+					titleId: data.titleId,
+					report:data.report,
+					initialized:true
+				});
+			}}
+		}
+
+		CP.methods.getMultipleSources(objSource, (data)=>{});
+	}
+
+	render() {
+		console.log('--- report', this.state);
+		let that = this,
+			markup = null;
+
+		if (this.state.initialized && this.state.titleId) {
+			markup = 
+				<div>
+					<h1><i class="fas fa-bolt mr-2"></i>{CP.methods.getLanguageElement(this.state.titleId)}</h1>
+				</div>
+
+		} else {
+			markup = 
+				<div>
+					<i className="fas fa-spinner fa-spin"></i> Loading...
+				</div>
+		}
+		return(markup);
+	}
+}
+
 CP.components.sidebar = class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -89,6 +136,8 @@ CP.components.sidebar = class extends React.Component {
 	componentDidMount() {
 		let that = this;
 		//console.log('sidebar state', this.state);
+		//if (that.props.instanceName) CP.instances[that.props.instanceName] = this;
+		if (that.props.canForceUpdate) CP.instances.push(this);
 	}
 
 	_transformData(data) {
@@ -174,6 +223,7 @@ CP.components.sidebar = class extends React.Component {
 	}
 
 	render() {
+		console.log('--- sidebar', this);
 		let that = this;
 		if (that.state.initialized) {
 			
