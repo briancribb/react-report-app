@@ -8,35 +8,60 @@ var CP = CP || {};
 CP.language = 'en';
 CP.localization = null;
 CP.navigation = null;
+CP.instances = [];
 CP.methods = {
 	init: function() {
 		// Whatever stuff needs to happen on init.
 		//this.addListeners();
-		ReactDOM.render(
-			<CP.components.table />, document.getElementById('report-table')
-		);
 
 		let initSources = {
 			localization:{path:'localization/'+CP.language+'/language.json', requestData:{}, callback: function(data){
-				console.log('-- localization', data);
+				//console.log('-- localization', data);
 				//CP.localization = data;
 			}},
 			navigation:{path:'data/navigation.json', requestData:{}, callback: function(data){
-				console.log('-- navigation', data);
+				//console.log('-- navigation', data);
 				//CP.navigation = data;
 			}}
 		}
 
 		CP.methods.getMultipleSources(initSources, (data)=>{
-			console.log('getMultipleSources', data);
 			CP.localization = data.localization;
 			CP.navigation = data.navigation;
+
 			ReactDOM.render(
-				<CP.components.sidebar containerId="accordian-parent" data={CP.navigation} />, document.getElementById('sidebar')
+				<CP.components.sidebar canForceUpdate={true} containerId="accordian-parent" data={CP.navigation} />, document.getElementById('sidebar')
+			);
+
+			ReactDOM.render(
+				<CP.components.report canForceUpdate={true} />, document.getElementById('report-container')
 			);
 		});
 		
 		//console.log(CP);
+	},
+	getLocalization: function() {
+		return this.localization;
+	},
+	getLanguageElement: function(id) {
+		console.log('getLanguageElement', this)
+		return this.localization[id] || '';
+	},
+	updateLocalization: function(lang = 'en') {
+
+		CP.methods.getMultipleSources({
+			objNewLanguage:{path:'localization/'+lang+'/language.json', requestData:{}, callback: function(data){
+				//console.log('-- localization', data);
+				CP.language = lang;
+				CP.localization = data;
+				CP.methods.renderAllComponents();
+			}}
+		},(data)=>{
+			//console.log('getMultipleSources', data);
+			CP.localization = data.objNewLanguage;
+		});
+
+		return this.localization;
 	},
 	getReport: function(path, callback) {
 		/*
@@ -75,6 +100,7 @@ CP.methods = {
 
 		// Each source is an object, so we can add more properties to it, like its own Deferred.
 		$.each( dfd_sources, function( key, value ) {
+			console.log('key, value', key, value);
 			/*
 			The key and value are just from the items in the sources object above. The key is the name of the source, 
 			and the value is the object with the path, callback, etc.
@@ -111,9 +137,10 @@ CP.methods = {
 				if (value.callback) value.callback(singleData);
 			});
 
-
+			let pathPrefix = 'react-report-app/';
 			$.ajax({
-				url: value.path,
+				url: pathPrefix+value.path,
+				data: value.data || {},
 				dataType: "json"
 			}).done(function(data) {
 
@@ -132,6 +159,7 @@ CP.methods = {
 		});
 	},
 	getSingleData: function(path, callback) {
+		console.log('getSingleData()');
 		let that = this;
 		fetch(path)
 			.then(response => response.json()) // Returns a promise, so gotta have another then.
@@ -144,5 +172,19 @@ CP.methods = {
 	},
 	addListeners: function() {
 		// Just in case we need some delegated listeners outside of Bootstrap or React.
+	},
+	renderAllComponents: function() {
+		/*
+		There are times when we want to update all component instances from the outside. For example, when we change the 
+		localization settings then we need to run the render function of applicable components. If a component may need 
+		to be updated in this way, it will be instantiated with a prop called canForceUpdate with a value of true.
+		for(let name in CP.instances) {
+			//console.log('instance', CP.instances[name]);
+			CP.instances[name].forceUpdate();
+		}
+		*/
+		CP.instances.forEach((instance)=>{
+			instance.forceUpdate();
+		});
 	}
 };
