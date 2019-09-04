@@ -13,6 +13,7 @@ CP.methods = {
 	init: function() {
 		// Whatever stuff needs to happen on init.
 		//this.addListeners();
+		let that = this;
 
 		let initSources = {
 			localization:{path:'localization/'+CP.language+'/language.json', requestData:{}, callback: function(data){
@@ -26,11 +27,10 @@ CP.methods = {
 		}
 
 		CP.methods.getMultipleSources(initSources, (data)=>{
-			CP.localization = data.localization;
-			CP.navigation = data.navigation;
-
+			that.localization = data.localization;
+			that.navigation = data.navigation;
 			ReactDOM.render(
-				<CP.components.sidebar canForceUpdate={true} containerId="accordian-parent" data={CP.navigation} />, document.getElementById('sidebar')
+				<CP.components.sidebar canForceUpdate={true} containerId="accordian-parent" data={that.navigation} />, document.getElementById('sidebar')
 			);
 
 			ReactDOM.render(
@@ -41,10 +41,10 @@ CP.methods = {
 		//console.log(CP);
 	},
 	getLocalization: function() {
-		return this.localization;
+		return this.localization || null;
 	},
 	getLanguageElement: function(id) {
-		console.log('getLanguageElement', this)
+		console.log('getLanguageElement', id)
 		return this.localization[id] || '';
 	},
 	updateLocalization: function(lang = 'en') {
@@ -183,8 +183,9 @@ CP.methods = {
 			CP.instances[name].forceUpdate();
 		}
 		*/
-		CP.instances.forEach((instance)=>{
-			instance.forceUpdate();
-		});
+		console.log('---- renderAllComponents() this: ', this);
+		//CP.instances.forEach((instance)=>{
+		//	instance.forceUpdate();
+		//});
 	}
 };
