@@ -11,7 +11,6 @@ CP.components.table = class extends React.Component {
 
 	componentDidMount() {
 		let that = this;
-		console.log('table state', this.state);
 		CP.methods.getReport = that.getReport.bind(this);
 		this.getReport();
 	}
@@ -21,7 +20,7 @@ CP.components.table = class extends React.Component {
 		that.setState({
 			initialized:false
 		});
-		CP.methods.getData('data/'+reportName+'.json', (data) =>{
+		CP.methods.getSingleData('data/'+reportName+'.json', (data) =>{
 			that.setState({
 				report:data,
 				initialized:true
@@ -89,7 +88,7 @@ CP.components.sidebar = class extends React.Component {
 
 	componentDidMount() {
 		let that = this;
-		console.log('sidebar state', this.state);
+		//console.log('sidebar state', this.state);
 	}
 
 	_transformData(data) {
