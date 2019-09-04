@@ -107,7 +107,7 @@ CP.components.report = class extends React.Component {
 	}
 
 	render() {
-		console.log('--- report', this.state);
+		console.log('--- report', this.state, CP.methods.getLocalization());
 		let that = this,
 			markup = null;
 
