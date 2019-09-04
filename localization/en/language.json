@@ -1,4 +1,6 @@
 [
+    {"reportTitleGeneral":"General Report"},
+    {"reportTitleThings":"Things Report"},
     {"about":"About"},
     {"stuff":"Stuff"},
     {"things":"Things"},
@@ -11,8 +13,6 @@
     {"sub11":"What Not"},
     {"sub12":"What Now?"},
     {"sub13":"What The...?"},
-    {"sub13":"Account"},
-    {"sub13":"Account"},
     {"sub13":"Account"},
     {"userId":"User ID"},
     {"username":"Username"},
