@@ -153,7 +153,7 @@ let CP = CP || (function(){
 					if (value.callback) value.callback(singleData);
 				});
 
-				let pathPrefix = 'react-report-app/';
+				let pathPrefix = '';//'react-report-app/';
 				$.ajax({
 					url: pathPrefix+value.path,
 					data: value.data || {},
@@ -201,7 +201,7 @@ let CP = CP || (function(){
 			There are times when we want to update all component instances from the outside. For example, when we change the 
 			localization settings then we need to run the render function of applicable components. If a component may need 
 			to be updated in this way, it will be instantiated with a prop called canForceUpdate with a value of true.
-			*/	
+			*/
 			instances.forEach((instance)=>{
 				instance.forceUpdate();
 			});
