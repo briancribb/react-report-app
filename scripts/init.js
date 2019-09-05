@@ -1,1 +1,1 @@
-CP.methods.init();
+CP.init();
