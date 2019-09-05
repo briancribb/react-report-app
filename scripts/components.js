@@ -4,33 +4,29 @@ CP.components.table = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			report:null
+			//report:null
 		};
 	}
 
 	componentDidMount() {
-		let that = this;
-		if (that.props.canForceUpdate) CP.instances.push(this);
-		this.getReport();
+		if (this.props.canForceUpdate) CP.addToInstances(this);
 	}
 
-	_getColumns(report) {
-		let that = this;
-		return report.fields.slice(1).map((field) =>{
+	_getColumns(data) {
+		return data.fields.slice(1).map((field) =>{
 			return(
 				<th key={field.id}>
-				{CP.methods.getLanguageElement(field.id)}
+				{CP.getLanguageElement(field.id)}
 				</th>
 			);
 		});
 	}
 
-	_getRows(report){
-		let that = this;
-		return report.rows.map((row) =>{
+	_getRows(data){
+		return data.rows.map((row) =>{
 			return(
 				<tr key={row.id}>
-					{that.state.report.fields.slice(1).map((field)=>{
+					{data.fields.slice(1).map((field)=>{
 						return(<td key={field.id}>{row[field.id]}</td>);
 					})}
 				</tr>
@@ -39,13 +35,12 @@ CP.components.table = class extends React.Component {
 	}
 
 	render() {
-		console.log('--- table', this);
 		let that = this,
 			markup = null;
 
-		if (this.state.initialized) {
-			let columns = that._getColumns(that.props.report);
-			let rows = that._getRows(that.props.report);
+		if (this.props.data) {
+			let columns = that._getColumns(that.props.data);
+			let rows = that._getRows(that.props.data);
 			markup = 
 				<table className="table table-responsive">
 					<thead>
@@ -78,9 +73,8 @@ CP.components.report = class extends React.Component {
 	}
 
 	componentDidMount() {
-		let that = this;
-		CP.methods.getReport = that.getReport.bind(this);
-		if (that.props.canForceUpdate) CP.instances.push(this);
+		CP.getReport = this.getReport.bind(this);
+		if (this.props.canForceUpdate) CP.addToInstances(this);
 		this.getReport();
 	}
 
@@ -91,10 +85,8 @@ CP.components.report = class extends React.Component {
 			reportName: reportName
 		});
 
-
 		let objSource = {
-			[this.state.reportName]:{path:'data/'+reportName+'.json', requestData:{}, callback: function(data){
-				//console.log('-- '+reportName, data);
+			[that.state.reportName]:{path:'data/'+reportName+'.json', requestData:{}, callback: function(data){
 				that.setState({
 					titleId: data.titleId,
 					report:data.report,
@@ -103,18 +95,18 @@ CP.components.report = class extends React.Component {
 			}}
 		}
 
-		CP.methods.getMultipleSources(objSource, (data)=>{});
+		CP.getMultipleSources(objSource, (data)=>{});
 	}
 
 	render() {
-		console.log('--- report', this.state, CP.methods.getLocalization());
 		let that = this,
 			markup = null;
 
-		if (this.state.initialized && this.state.titleId) {
+		if (this.state.initialized && this.state.titleId && this.state.report) {
 			markup = 
 				<div>
-					<h1><i class="fas fa-bolt mr-2"></i>{CP.methods.getLanguageElement(this.state.titleId)}</h1>
+					<h1><i class="fas fa-bolt mr-2"></i>{CP.getLanguageElement(this.state.titleId)}</h1>
+					<CP.components.table data={this.state.report} />
 				</div>
 
 		} else {
@@ -135,9 +127,8 @@ CP.components.sidebar = class extends React.Component {
 
 	componentDidMount() {
 		let that = this;
-		//console.log('sidebar state', this.state);
 		//if (that.props.instanceName) CP.instances[that.props.instanceName] = this;
-		if (that.props.canForceUpdate) CP.instances.push(this);
+		if (that.props.canForceUpdate) CP.addToInstances(this);
 	}
 
 	_transformData(data) {
@@ -172,10 +163,7 @@ CP.components.sidebar = class extends React.Component {
 
 		function getLink(navItem, extraClasses = '') {
 			let strClasses = extraClasses ? ("nav-link " + extraClasses) : "nav-link";
-
-
-			let markup = <a className={strClasses}>{navItem.label}</a>;
-
+			let markup = <a className={strClasses}>{CP.getLanguageElement(navItem.id)}</a>;
 			return markup;
 		}
 
@@ -191,7 +179,7 @@ CP.components.sidebar = class extends React.Component {
 					 href={'#'+navItem.id+'-child'} role="button" 
 					 aria-expanded="false" aria-controls={navItem.id+'-child'}
 					>
-					{navItem.label}<i class="fas fa-chevron-right float-right mt-1"></i>
+					{CP.getLanguageElement(navItem.id)}<i class="fas fa-chevron-right float-right mt-1"></i>
 				</a>)
 			:
 				getLink(navItem)
@@ -223,13 +211,7 @@ CP.components.sidebar = class extends React.Component {
 	}
 
 	render() {
-		console.log('--- sidebar', this);
 		let that = this;
-		if (that.state.initialized) {
-			
-		} else {
-			
-		}
 		return (
 			<ul class="sidebar-nav nav flex-column accordian"  id={that.props.containerId}>
 				{that._getLinks(that.props.containerId)}
