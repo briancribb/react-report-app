@@ -143,6 +143,7 @@ CP.components.sidebar = class extends React.Component {
 
 	handleClick(evt) {
 		console.log('handleClick', this.getNavItem(evt.target.id));
+		evt.preventDefault();
 		let navItem = this.getNavItem(evt.target.id);
 		if (navItem.action && navItem.action === 'report') {
 			CP.getReport(navItem.target);
@@ -181,7 +182,7 @@ CP.components.sidebar = class extends React.Component {
 
 		function getLink(navItem, extraClasses = '') {
 			let strClasses = extraClasses ? ("nav-link " + extraClasses) : "nav-link";
-			let markup = <a id={navItem.id} onClick={that.handleClick} className={strClasses}>{CP.getLanguageElement(navItem.id)}</a>;
+			let markup = <a id={navItem.id} onClick={that.handleClick} className={strClasses} href="#">{CP.getLanguageElement(navItem.id)}</a>;
 			return markup;
 		}
 
