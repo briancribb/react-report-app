@@ -1,5 +1,6 @@
 var CP = CP || {};
 CP.components = {};
+
 CP.components.table = class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -122,13 +123,30 @@ CP.components.report = class extends React.Component {
 CP.components.sidebar = class extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {navItems:this._transformData(props.data)};
+		this.state = {
+			navItems:this._transformData(props.data)
+		};
+		this.handleClick = this.handleClick.bind(this);
 	}
 
 	componentDidMount() {
 		let that = this;
 		//if (that.props.instanceName) CP.instances[that.props.instanceName] = this;
 		if (that.props.canForceUpdate) CP.addToInstances(this);
+	}
+
+	getNavItem(id) {
+		return this.props.data.find(function(item){
+			return item.id === id;
+		});
+	}
+
+	handleClick(evt) {
+		console.log('handleClick', this.getNavItem(evt.target.id));
+		let navItem = this.getNavItem(evt.target.id);
+		if (navItem.action && navItem.action === 'report') {
+			CP.getReport(navItem.target);
+		}
 	}
 
 	_transformData(data) {
@@ -154,16 +172,16 @@ CP.components.sidebar = class extends React.Component {
 			let parent = objParents[key]
 			arrNavItems.push(parent);
 		});
+		console.log('arrNavItems', arrNavItems);
 		return arrNavItems;		
 	}
 
 	_getLinks() {
 		let that = this;
 
-
 		function getLink(navItem, extraClasses = '') {
 			let strClasses = extraClasses ? ("nav-link " + extraClasses) : "nav-link";
-			let markup = <a className={strClasses}>{CP.getLanguageElement(navItem.id)}</a>;
+			let markup = <a id={navItem.id} onClick={that.handleClick} className={strClasses}>{CP.getLanguageElement(navItem.id)}</a>;
 			return markup;
 		}
 
