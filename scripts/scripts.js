@@ -18,20 +18,14 @@ let CP = CP || (function(){
 			this.addListeners();
 			let that = this;
 
-			let initSources = {
-				localization:{path:'localization/'+languageId+'/language.json', requestData:{}, callback: function(data){
-					//console.log('-- localization', data);
-					//CP.localization = data;
-				}},
-				navigation:{path:'data/navigation.json', requestData:{}, callback: function(data){
-					//console.log('-- navigation', data);
-					//CP.navigation = data;
-				}}
-			}
-
-			that.getMultipleSources(initSources, (data)=>{
-				localization = data.localization;
-				navigation = data.navigation;
+			let initSources = [
+				{path:'localization/'+languageId+'/language.json', requestData:{}},
+				{path:'data/navigation.json', requestData:{}}
+			]
+	
+			that.getMultipleSources(initSources).then((arrData)=>{
+				localization = arrData[0];
+				navigation = arrData[1];
 				ReactDOM.render(
 					<CP.components.sidebar canForceUpdate={true} containerId="accordian-parent" data={navigation} />, document.getElementById('sidebar')
 				);
@@ -40,7 +34,7 @@ let CP = CP || (function(){
 					<CP.components.report canForceUpdate={true} />, document.getElementById('report-container')
 				);
 			});
-			
+
 			//console.log(CP);
 		},
 		addToInstances: function(instance) {
@@ -53,32 +47,16 @@ let CP = CP || (function(){
 		getLocalization: function() {
 			return localization || null;
 		},
-		getLanguageElement: function(id) {
+		getLanguageId: function(id) {
 			return localization[id] || '';
 		},
 		updateLocalization: function(langId = 'en') {
 			let that = this;
-			that.getMultipleSources({
-				objNewLanguage: {
-					path:'localization/'+langId+'/language.json',
-					requestData:{},
-					callback: function(data){
-						//console.log('-- localization', data);
-						//that.languageId = langId;
-						//that.localization = data;
-						//console.log('-- CP', CP);
-						//that.methods.renderAllComponents();
-					}
-				}
-			},(data)=>{
-				console.log('getMultipleSources Total:', data, that);
-				//that.setLocalization(langId, data.objNewLanguage);
-				languageId = langId;
-				localization = Object.assign({},data.objNewLanguage);
+			that.getData('localization/'+langId+'/language.json').then((data)=>{
+				languageId = langId;// Set scoped variable to the one that was passed in.
+				localization = Object.assign({},data); // Add data to scoped object.
 				that.renderAllComponents();
 			});
-
-			//return this.localization;
 		},
 		getReport: function(path, callback) {
 			/*

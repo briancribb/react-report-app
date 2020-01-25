@@ -17,7 +17,7 @@ CP.components.table = class extends React.Component {
 		return data.fields.slice(1).map((field) =>{
 			return(
 				<th key={field.id}>
-				{CP.getLanguageElement(field.id)}
+				{CP.getLanguageId(field.id)}
 				</th>
 			);
 		});
@@ -105,7 +105,7 @@ CP.components.report = class extends React.Component {
 		if (this.state.initialized && this.state.titleId && this.state.report) {
 			markup = 
 				<div>
-					<h1><i class="fas fa-bolt mr-2"></i>{CP.getLanguageElement(this.state.titleId)}</h1>
+					<h1><i class="fas fa-bolt mr-2"></i>{CP.getLanguageId(this.state.titleId)}</h1>
 					<CP.components.table data={this.state.report} />
 				</div>
 
@@ -181,7 +181,7 @@ CP.components.sidebar = class extends React.Component {
 
 		function getLink(navItem, extraClasses = '') {
 			let strClasses = extraClasses ? ("nav-link " + extraClasses) : "nav-link";
-			let markup = <a id={navItem.id} onClick={that.handleClick} className={strClasses} href="#">{CP.getLanguageElement(navItem.id)}</a>;
+			let markup = <a id={navItem.id} onClick={that.handleClick} className={strClasses} href="#">{CP.getLanguageId(navItem.id)}</a>;
 			return markup;
 		}
 
@@ -197,7 +197,7 @@ CP.components.sidebar = class extends React.Component {
 					 href={'#'+navItem.id+'-child'} role="button" 
 					 aria-expanded="false" aria-controls={navItem.id+'-child'}
 					>
-					{CP.getLanguageElement(navItem.id)}<i class="fas fa-chevron-right float-right mt-1"></i>
+					{CP.getLanguageId(navItem.id)}<i class="fas fa-chevron-right float-right mt-1"></i>
 				</a>)
 			:
 				getLink(navItem)
