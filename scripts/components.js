@@ -83,20 +83,19 @@ CP.components.report = class extends React.Component {
 		let that = this;
 		that.setState({
 			initialized:false,
-			reportName: reportName
 		});
 
-		let objSource = {
-			[that.state.reportName]:{path:'data/'+reportName+'.json', requestData:{}, callback: function(data){
-				that.setState({
-					titleId: data.titleId,
-					report:data.report,
-					initialized:true
-				});
-			}}
-		}
+		let path = 'data/'+reportName+'.json';
 
-		CP.getMultipleSources(objSource, (data)=>{});
+		CP.getData(path).then((data)=>{
+			that.setState({
+				reportName: reportName,
+				titleId: data.titleId,
+				report:data.report,
+				initialized:true
+			});
+		});
+
 	}
 
 	render() {
