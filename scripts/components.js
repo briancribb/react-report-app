@@ -71,10 +71,11 @@ CP.components.report = class extends React.Component {
 			reportName:'',
 			report:null
 		};
+		this.getReport = this.getReport.bind(this);
 	}
 
 	componentDidMount() {
-		CP.getReport = this.getReport.bind(this);
+		CP.getReport = this.getReport;
 		if (this.props.canForceUpdate) CP.addToInstances(this);
 		this.getReport();
 	}
@@ -150,12 +151,22 @@ CP.components.sidebar = class extends React.Component {
 	}
 
 	_transformData(data) {
+		/*
+		This function arranges the data so that it will be friendly to the sidebar component.
+		*/
 		let arrParentKeys = [],
-				arrChildLinks = [],
-				objParents = {};
+			arrChildLinks = [],
+			objParents = {};
 
 		data.forEach(function(item){
+			/*
+			Parent items will not have a parent id. This sidebar only goes one layer down, 
+			from parent to a single set of children.
+			*/
 			if (!item.parentId) {
+				/*
+				Array is just parent names, to preserve the order. Data will come from the object.
+				*/
 				arrParentKeys.push(item.id);
 				objParents[item.id] = item;
 			} else {
@@ -163,12 +174,18 @@ CP.components.sidebar = class extends React.Component {
 			}
 		});
 		arrChildLinks.forEach(function(item){
+			/*
+			Starting the parent object's child array if it doesn't exist, adding to it if it does exist.
+			*/
 			let parent = objParents[item.parentId];
 			parent.arrChildMenu = parent.arrChildMenu || [];
 			parent.arrChildMenu.push(item);
 		});
 		let arrNavItems = [];
 		arrParentKeys.forEach(function(key){
+			/*
+			Now that the objects are built, add them in the original order.
+			*/
 			let parent = objParents[key]
 			arrNavItems.push(parent);
 		});
