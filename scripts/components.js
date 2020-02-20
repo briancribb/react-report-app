@@ -1,6 +1,13 @@
 var CP = CP || {};
 CP.components = {};
 
+
+/*
+One component for all tables. It does not care what page it's on or what report it's 
+displaying. One minor data change is included to simulate times at work where the data 
+comes in slightly different from the way one would like. In this case, a user id is 
+included in the data returned.
+*/
 CP.components.table = class extends React.Component {
 	constructor(props) {
 		super(props);
@@ -10,10 +17,19 @@ CP.components.table = class extends React.Component {
 	}
 
 	componentDidMount() {
+		// Some things need to update when the language is changed.
 		if (this.props.canForceUpdate) CP.addToInstances(this);
 	}
 
 	_getColumns(data) {
+		/*
+		First column in the user id and we don't need that to render the table.
+		This is to simulate data that I've gotten in the past at work, where the 
+		back-end passes you a user id whether you need it or not.
+
+		But if that changes, then we can just remove the slice method in two places 
+		(columns, rows) and all reports are updated.
+		*/
 		return data.fields.slice(1).map((field) =>{
 			return(
 				<th key={field.id}>
