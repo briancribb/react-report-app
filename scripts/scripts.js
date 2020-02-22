@@ -27,7 +27,7 @@ let CP = CP || (function(){
 				localization = arrData[0];
 				navigation = arrData[1];
 				ReactDOM.render(
-					<CP.components.sidebar canForceUpdate={true} containerId="accordian-parent" data={navigation} />, document.getElementById('sidebar')
+					<CP.components.primarynav canForceUpdate={true} containerId="accordian-parent" data={navigation} />, document.getElementById('sidebar')
 				);
 
 				ReactDOM.render(
@@ -41,6 +41,7 @@ let CP = CP || (function(){
 			instances.push(instance);
 		},
 		setLocalization: function(langId = 'en', obj = null) {
+			console.log('setLocalization()');
 			languageId = langId;
 			localization = obj;
 		},
@@ -51,6 +52,7 @@ let CP = CP || (function(){
 			return localization[id] || '';
 		},
 		updateLocalization: function(langId = 'en') {
+			console.log('updateLocalization()');
 			let that = this;
 			that.getData('localization/'+langId+'/language.json').then((data)=>{
 				languageId = langId;// Set scoped variable to the one that was passed in.

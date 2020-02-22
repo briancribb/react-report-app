@@ -42,7 +42,7 @@ CP.components.table = class extends React.Component {
 	_getRows(data){
 		return data.rows.map((row) =>{
 			return(
-				<tr key={row.id}>
+				<tr key={row.userId}>
 					{data.fields.slice(1).map((field)=>{
 						return(<td key={field.id}>{row[field.id]}</td>);
 					})}
@@ -122,7 +122,7 @@ CP.components.report = class extends React.Component {
 		if (this.state.initialized && this.state.titleId && this.state.report) {
 			markup = 
 				<div>
-					<h1><i class="fas fa-bolt mr-2"></i>{CP.getLanguageId(this.state.titleId)}</h1>
+					<h1><i className="fas fa-bolt mr-2"></i>{CP.getLanguageId(this.state.titleId)}</h1>
 					<CP.components.table data={this.state.report} />
 				</div>
 
@@ -136,7 +136,7 @@ CP.components.report = class extends React.Component {
 	}
 }
 
-CP.components.sidebar = class extends React.Component {
+CP.components.primarynav = class extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -168,7 +168,7 @@ CP.components.sidebar = class extends React.Component {
 
 	_transformData(data) {
 		/*
-		This function arranges the data so that it will be friendly to the sidebar component.
+		This function arranges the data so that it will be friendly to the primarynav component.
 		*/
 		let arrParentKeys = [],
 			arrChildLinks = [],
@@ -176,7 +176,7 @@ CP.components.sidebar = class extends React.Component {
 
 		data.forEach(function(item){
 			/*
-			Parent items will not have a parent id. This sidebar only goes one layer down, 
+			Parent items will not have a parent id. This primarynav only goes one layer down, 
 			from parent to a single set of children.
 			*/
 			if (!item.parentId) {
@@ -230,7 +230,7 @@ CP.components.sidebar = class extends React.Component {
 					 href={'#'+navItem.id+'-child'} role="button" 
 					 aria-expanded="false" aria-controls={navItem.id+'-child'}
 					>
-					{CP.getLanguageId(navItem.id)}<i class="fas fa-chevron-right float-right mt-1"></i>
+					{CP.getLanguageId(navItem.id)}<i className="fas fa-chevron-right float-right mt-1"></i>
 				</a>)
 			:
 				getLink(navItem)
@@ -240,20 +240,20 @@ CP.components.sidebar = class extends React.Component {
 			if (navItem.arrChildMenu) {
 					let childLinks = navItem.arrChildMenu.map((childLink)=>{
 						return (
-							<li class="nav-item" key={childLink.id}>
+							<li className="nav-item" key={childLink.id}>
 								{getLink(childLink, "pl-4")}
 							</li>
 						)						
 					});
 					childMenuMarkup = (
-						<ul id={navItem.id+'-child'} class="sub-menu nav collapse" data-parent={'#'+that.props.containerId}>
+						<ul id={navItem.id+'-child'} className="sub-menu nav collapse" data-parent={'#'+that.props.containerId}>
 							{childLinks}
 						</ul>
 					);
 			}
 
 			return (
-				<li class="nav-item" key={navItem.id}>
+				<li className="nav-item" key={navItem.id}>
 					{linkMarkup}
 					{childMenuMarkup}
 				</li>
@@ -264,7 +264,7 @@ CP.components.sidebar = class extends React.Component {
 	render() {
 		let that = this;
 		return (
-			<ul class="sidebar-nav nav flex-column accordian"  id={that.props.containerId}>
+			<ul className="nav flex-column accordian"  id={that.props.containerId}>
 				{that._getLinks(that.props.containerId)}
 			</ul>
 		);
