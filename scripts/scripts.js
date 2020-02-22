@@ -41,8 +41,10 @@ let CP = CP || (function(){
 		addToInstances: function(instance) {
 			instances.push(instance);
 		},
-		setLocalization: function(langId = 'en', obj = null) {
-			console.log('setLocalization()');
+		setLocalization: function(langId = 'en', obj = {}) {
+			let action = obj.rtl ? 'add' : 'remove';
+			console.log('updateLocalization()', action);
+			$('#sidebar')[action+'Class']('order-md-last');
 			languageId = langId;
 			localization = obj;
 		},
@@ -53,11 +55,9 @@ let CP = CP || (function(){
 			return localization[id] || '';
 		},
 		updateLocalization: function(langId = 'en') {
-			console.log('updateLocalization()');
 			let that = this;
 			that.getData('localization/'+langId+'/language.json').then((data)=>{
-				languageId = langId;// Set scoped variable to the one that was passed in.
-				localization = Object.assign({},data); // Add data to scoped object.
+				that.setLocalization(langId, Object.assign({},data));
 				that.renderAllComponents();
 			});
 		},
