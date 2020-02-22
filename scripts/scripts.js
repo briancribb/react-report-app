@@ -7,9 +7,8 @@ $(window).on('resize', _.debounce(manageResize, 200));
 
 let CP = CP || (function(){
 
-	let languageId = 'en',
+	let languageId = null,
 		localization = null,
-		navigation = null,
 		instances = [];
 
 	let APP = {
@@ -17,17 +16,19 @@ let CP = CP || (function(){
 			// Whatever stuff needs to happen on init.
 			this.addListeners();
 			let that = this;
+			let initLanguageId = 'en';
+
 
 			let initSources = [
-				{path:'localization/'+languageId+'/language.json', requestData:{}},
+				{path:'localization/'+initLanguageId+'/language.json', requestData:{}},
 				{path:'data/navigation.json', requestData:{}}
 			]
 	
 			that.getMultipleSources(initSources).then((arrData)=>{
-				localization = arrData[0];
-				navigation = arrData[1];
+				that.setLocalization(initLanguageId, arrData[0]);
+
 				ReactDOM.render(
-					<CP.components.primarynav canForceUpdate={true} containerId="accordian-parent" data={navigation} />, document.getElementById('sidebar')
+					<CP.components.primarynav canForceUpdate={true} containerId="accordian-parent" data={arrData[1]} />, document.getElementById('primarynav')
 				);
 
 				ReactDOM.render(
