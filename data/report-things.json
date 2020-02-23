@@ -1,0 +1,91 @@
+{
+	"titleId":"reportTitleThings",
+	"report":{
+		"fields":[
+			{"id":"userId","label":"User ID"},
+			{"id":"currency","label":"Currency"},
+			{"id":"currency_code","label":"Currency Code"},
+			{"id":"stock_market","label":"Stock Market"},
+			{"id":"stock_industry","label":"Stock Industry"},
+			{"id":"stock_symbol","label":"Stock Label"},
+			{"id":"stock_sector","label":"Stock Sector"},
+			{"id":"stock_name","label":"Stock Name"},
+			{"id":"stock_market_cap","label":"Stock Market Cap"},
+			{"id":"slogan","label":"Slogan"}
+		],
+		"rows":[
+			{
+				"userId":1,
+				"currency":"Peso",
+				"currency_code":"PHP",
+				"stock_market":"NYSE",
+				"stock_industry":"Steel/Iron Ore",
+				"stock_symbol":"NUE",
+				"stock_sector":"Basic Industries",
+				"stock_name":"Nucor Corporation",
+				"stock_market_cap":"$17.52B",
+				"slogan":null
+			},
+			{
+				"userId":2,
+				"currency":"Rupiah",
+				"currency_code":"IDR",
+				"stock_market":"NYSE",
+				"stock_industry":"Package Goods/Cosmetics",
+				"stock_symbol":"CHD",
+				"stock_sector":"Basic Industries",
+				"stock_name":"Church & Dwight Company, Inc.",
+				"stock_market_cap":"$13.26B",
+				"slogan":"deploy scalable partnerships"
+			},
+			{
+				"userId":3,
+				"currency":"Yuan Renminbi",
+				"currency_code":"CNY",
+				"stock_market":"NASDAQ",
+				"stock_industry":"Real Estate Investment Trusts",
+				"stock_symbol":"SNHNL",
+				"stock_sector":"Consumer Services",
+				"stock_name":"Senior Housing Properties Trust",
+				"stock_market_cap":"n/a",
+				"slogan":"evolve strategic content"
+			},
+			{
+				"userId":4,
+				"currency":"Rupiah",
+				"currency_code":"IDR",
+				"stock_market":"NASDAQ",
+				"stock_industry":"Industrial Machinery/Components",
+				"stock_symbol":"MVIS",
+				"stock_sector":"Capital Goods",
+				"stock_name":"Microvision, Inc.",
+				"stock_market_cap":"$134.2M",
+				"slogan":null
+			},
+			{
+				"userId":5,
+				"currency":"Krona",
+				"currency_code":"SEK",
+				"stock_market":"NYSE",
+				"stock_industry":"Investment Bankers/Brokers/Service",
+				"stock_symbol":"SF",
+				"stock_sector":"Finance",
+				"stock_name":"Stifel Financial Corporation",
+				"stock_market_cap":"$3.11B",
+				"slogan":null
+			},
+			{
+				"userId":6,
+				"currency":"Dollar",
+				"currency_code":"USD",
+				"stock_market":"NASDAQ",
+				"stock_industry":"n/a",
+				"stock_symbol":"PSCD",
+				"stock_sector":"n/a",
+				"stock_name":"PowerShares S&P SmallCap Consumer Discretionary Portfolio",
+				"stock_market_cap":"$61.54M",
+				"slogan":"leverage proactive markets"
+			}
+		]
+	}
+}
