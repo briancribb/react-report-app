@@ -115,7 +115,7 @@ CP.components.report = class extends React.Component {
 		if (this.state.initialized && this.state.titleId && this.state.report) {
 			markup = 
 				<div>
-					<h1><i className="fas fa-bolt mr-2"></i>{CP.getLanguageId(this.state.titleId)}</h1>
+					<h1><i className="fas fa-bolt mx-2"></i>{CP.getLanguageId(this.state.titleId)}</h1>
 					<CP.components.table data={this.state.report} />
 				</div>
 
