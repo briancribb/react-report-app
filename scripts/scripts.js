@@ -9,6 +9,7 @@ let CP = CP || (function(){
 
 	let languageId = null,
 		localization = null,
+		rtl = false,
 		instances = [];
 
 	let APP = {
@@ -32,7 +33,7 @@ let CP = CP || (function(){
 				);
 
 				ReactDOM.render(
-					<CP.components.report canForceUpdate={true} />, document.getElementById('report-container')
+					<CP.components.report canForceUpdate={true} />, document.getElementById('content')
 				);
 			});
 
@@ -43,8 +44,10 @@ let CP = CP || (function(){
 		},
 		setLocalization: function(langId = 'en', obj = {}) {
 			let action = obj.rtl ? 'add' : 'remove';
+			rtl = obj.rtl || false; // True if true, false if undefined.
 			console.log('updateLocalization()', action);
 			$('#sidebar')[action+'Class']('order-md-last');
+			$('#content')[action+'Class']('rtl');
 			languageId = langId;
 			localization = obj;
 		},
@@ -53,6 +56,9 @@ let CP = CP || (function(){
 		},
 		getLanguageId: function(id) {
 			return localization[id] || '';
+		},
+		getRTL: function(id) {
+			return rtl;
 		},
 		updateLocalization: function(langId = 'en') {
 			let that = this;

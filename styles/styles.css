@@ -1,6 +1,10 @@
 html {
   font-size: 16px;
 }
+.rtl {
+  direction:rtl;
+  text-align: right;
+}
 
 .top-nav {
   background-color: #0f8bba;

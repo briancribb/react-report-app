@@ -22,15 +22,7 @@ CP.components.table = class extends React.Component {
 	}
 
 	_getColumns(data) {
-		/*
-		First column in the user id and we don't need that to render the table.
-		This is to simulate data that I've gotten in the past at work, where the 
-		back-end passes you a user id whether you need it or not.
-
-		But if that changes, then we can just remove the slice method in two places 
-		(columns, rows) and all reports are updated.
-		*/
-		return data.fields.slice(1).map((field) =>{
+		return data.fields.map((field) =>{
 			return(
 				<th key={field.id}>
 				{CP.getLanguageId(field.id)}
@@ -43,7 +35,7 @@ CP.components.table = class extends React.Component {
 		return data.rows.map((row) =>{
 			return(
 				<tr key={row.userId}>
-					{data.fields.slice(1).map((field)=>{
+					{data.fields.map((field)=>{
 						return(<td key={field.id}>{row[field.id]}</td>);
 					})}
 				</tr>
@@ -58,8 +50,9 @@ CP.components.table = class extends React.Component {
 		if (this.props.data) {
 			let columns = that._getColumns(that.props.data);
 			let rows = that._getRows(that.props.data);
+			let direction = CP.getRTL() ? ' rtl' : '';
 			markup = 
-				<table className="table table-responsive">
+				<table className={"table table-responsive"+direction}>
 					<thead>
 						<tr>
 							{columns}
